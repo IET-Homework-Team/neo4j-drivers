@@ -1,6 +1,7 @@
 # neo4j-drivers
 
-[![Build Status](https://travis-ci.org/szarnyasg/neo4j-drivers.svg?branch=master)](https://travis-ci.org/szarnyasg/neo4j-drivers)
+[![Build Status](https://travis-ci.org/IET-Homework-Team/neo4j-drivers.svg?branch=master)](https://travis-ci.org/IET-Homework-Team/neo4j-drivers)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fb64f4f161f14704a434887e1efe4ad2)](https://www.codacy.com/app/IET-Homework-Team/neo4j-drivers?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=IET-Homework-Team/neo4j-drivers&amp;utm_campaign=Badge_Grade)
 
 The `ReactiveDriver` class takes a Neo4j Driver and enhances it with _reactive_ (or _incremental_) change notifications by applying the [Decorator pattern](https://en.wikipedia.org/wiki/Decorator_pattern).
 
