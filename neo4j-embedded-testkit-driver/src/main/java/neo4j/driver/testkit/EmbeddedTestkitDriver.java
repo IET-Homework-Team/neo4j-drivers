@@ -46,6 +46,7 @@ public class EmbeddedTestkitDriver implements Driver {
 
 	@Override
 	public void close() {
+        //Empty on purpose
 	}
 
 	@Override

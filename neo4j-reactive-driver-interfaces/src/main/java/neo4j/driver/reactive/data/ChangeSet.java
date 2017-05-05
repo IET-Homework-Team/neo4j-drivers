@@ -6,8 +6,8 @@ import com.google.common.collect.Multiset;
 
 public class ChangeSet<T> {
 
-	final Multiset<T> positive;
-	final Multiset<T> negative;
+	private final Multiset<T> positive;
+	private final Multiset<T> negative;
 
 	public ChangeSet(Multiset<T> positive, Multiset<T> negative) {
 		super();

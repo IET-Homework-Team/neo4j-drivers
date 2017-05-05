@@ -24,11 +24,11 @@ import neo4j.driver.reactive.interfaces.RecordChangeSetListener;
 
 public class Neo4jReactiveSession implements ReactiveSession {
 
-	final Session session;
+	private final Session session;
 
-	final Map<String, String> querySpecifications = Maps.newHashMap();
-	final Map<String, Multiset<Record>> queryResults = Maps.newHashMap();
-	final Map<String, RecordChangeSetListener> listeners = Maps.newHashMap();
+	private final Map<String, String> querySpecifications = Maps.newHashMap();
+	private final Map<String, Multiset<Record>> queryResults = Maps.newHashMap();
+	private final Map<String, RecordChangeSetListener> listeners = Maps.newHashMap();
 
 	public Neo4jReactiveSession(Session session) {
 		super();

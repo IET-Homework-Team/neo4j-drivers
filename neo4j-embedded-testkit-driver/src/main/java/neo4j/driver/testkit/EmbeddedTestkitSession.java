@@ -22,10 +22,10 @@ import neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
 
 public class EmbeddedTestkitSession implements Session {
 
-	final GraphDatabaseService gds;
-	final Map<String, String> querySpecifications = new HashMap<>();
-	final Map<String, Multiset<Record>> queryResults = new HashMap<>();
-	final Map<String, Multiset<Record>> deltas = new HashMap<>();
+	private final GraphDatabaseService gds;
+	private final Map<String, String> querySpecifications = new HashMap<>();
+	private final Map<String, Multiset<Record>> queryResults = new HashMap<>();
+	private final Map<String, Multiset<Record>> deltas = new HashMap<>();
 
 	public EmbeddedTestkitSession(GraphDatabaseService gds, AccessMode mode) {
 		this.gds = gds;
@@ -94,6 +94,7 @@ public class EmbeddedTestkitSession implements Session {
 
 	@Override
 	public void close() {
+        //Empty on purpose
 	}
 
 	@Override

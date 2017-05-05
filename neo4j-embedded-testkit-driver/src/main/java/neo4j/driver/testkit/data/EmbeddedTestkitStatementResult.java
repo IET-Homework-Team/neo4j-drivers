@@ -13,7 +13,7 @@ import org.neo4j.graphdb.Result;
 
 public class EmbeddedTestkitStatementResult implements StatementResult {
 
-	final Result result;
+	private final Result result;
 
 	public EmbeddedTestkitStatementResult(final Result result) {
 		this.result = result;

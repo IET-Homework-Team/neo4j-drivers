@@ -5,7 +5,7 @@ import org.neo4j.graphdb.Transaction;
 
 import neo4j.driver.transactions.SessionDependentTransaction;
 
-public class EmbeddedTestkitTransaction extends SessionDependentTransaction<org.neo4j.graphdb.Transaction> {
+public class EmbeddedTestkitTransaction extends SessionDependentTransaction<Transaction> {
 
 	public EmbeddedTestkitTransaction(Session session, Transaction internalTransaction) {
 		super(session, internalTransaction);

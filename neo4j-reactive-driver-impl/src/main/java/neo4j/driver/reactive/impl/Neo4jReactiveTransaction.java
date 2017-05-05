@@ -5,7 +5,7 @@ import org.neo4j.driver.v1.Transaction;
 
 import neo4j.driver.transactions.SessionDependentTransaction;
 
-public class Neo4jReactiveTransaction extends SessionDependentTransaction<org.neo4j.driver.v1.Transaction> {
+public class Neo4jReactiveTransaction extends SessionDependentTransaction<Transaction> {
 
 	public Neo4jReactiveTransaction(Session session, Transaction internalTransaction) {
 		super(session, internalTransaction);
