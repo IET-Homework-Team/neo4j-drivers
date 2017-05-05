@@ -14,6 +14,7 @@ subprojects {
   apply plugin: 'java'
   apply plugin: 'maven'
   apply plugin: 'maven-publish'
+  apply plugin: 'jacoco'
 
   jar { from sourceSets.main.allJava }
 
@@ -42,5 +43,12 @@ subprojects {
 
   dependencies {
     testCompile group: 'junit', name: 'junit', version: junitVersion
+  }
+  
+  jacocoTestReport {
+    reports {
+      xml.enabled true
+      html.enabled false
+    }
   }
 }
