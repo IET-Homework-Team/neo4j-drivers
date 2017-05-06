@@ -1,6 +1,9 @@
 package neo4j.driver.reactive;
 
+import static org.junit.Assert.*;
 import static org.neo4j.driver.v1.Values.parameters;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +15,12 @@ import neo4j.driver.reactive.impl.Neo4jReactiveDriver;
 import neo4j.driver.reactive.interfaces.ReactiveDriver;
 import neo4j.driver.reactive.interfaces.ReactiveSession;
 import neo4j.driver.testkit.EmbeddedTestkitDriver;
+
+import org.neo4j.driver.v1.Statement;
+import org.neo4j.driver.v1.Value;
+import org.neo4j.driver.v1.Record;
+import org.neo4j.driver.internal.InternalRecord;
+import org.neo4j.driver.internal.value.InternalValue;
 
 public class Neo4jReactiveDriverTest {
 
@@ -84,6 +93,35 @@ public class Neo4jReactiveDriverTest {
 		} catch (IllegalStateException e) {}
 	}
 	
+	@Test
+	public void test5() throws Exception { //test different run options than map
+		session.reset();
+		try {
+			Transaction tx = session.beginTransaction("Used a statement.");
+			Statement stat = new Statement("CREATE (a:Person {name:'Bob'})");
+			tx.run(stat);
+			tx.success();
+			if(tx.isOpen()) tx.close();
+			assertTrue(session.lastBookmark().equals("Used a statement."));
+			
+			/*//not finished
+			tx = session.beginTransaction("Used a record.");
+			Record rec;
+			tx.run("CREATE (a:Person {name: $rec})",rec);
+			tx.success();
+			if(tx.isOpen()) tx.close();
+			assertTrue(session.lastBookmark().equals("Used a record."));
+			
+			tx = session.beginTransaction("Used a value.");
+			Value val;
+			tx.run("CREATE (a:Person {name: $val})",val);
+			assertTrue(session.lastBookmark().equals("Used a value."));
+			*/
+			
+			//tx.failure();
+		} catch (UnsupportedOperationException e) {}
+		session.close();
+	}
 	
 
 }

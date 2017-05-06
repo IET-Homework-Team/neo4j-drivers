@@ -25,6 +25,7 @@ import neo4j.driver.reactive.interfaces.RecordChangeSetListener;
 public class Neo4jReactiveSession implements ReactiveSession {
 
 	private final Session session;
+	private String bookmark;
 
 	private final Map<String, String> querySpecifications = Maps.newHashMap();
 	private final Map<String, Multiset<Record>> queryResults = Maps.newHashMap();
@@ -123,17 +124,21 @@ public class Neo4jReactiveSession implements ReactiveSession {
 
 	@Override
 	public Transaction beginTransaction(String bookmark) {
-		return beginTransaction(bookmark);
+		this.bookmark=bookmark;
+		return beginTransaction();
 	}
 
 	@Override
 	public String lastBookmark() {
-		return session.lastBookmark();
+		return this.bookmark;
 	}
 
 	@Override
 	public void reset() {
-		session.reset();
+		this.bookmark="";
+		querySpecifications.clear();
+		queryResults.clear();
+		listeners.clear();
 	}
 
 	@Override
