@@ -14,6 +14,7 @@ import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
 import org.neo4j.graphdb.Entity;
+import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 
@@ -56,7 +57,7 @@ public class EmbeddedTestkitRecordFactory {
 			if (value instanceof Node) {
 				final Node node = (Node) value;
 				final List<String> labels = StreamSupport.stream(node.getLabels().spliterator(), false)
-						.map(label -> label.name()).collect(Collectors.toList());
+						.map(Label::name).collect(Collectors.toList());
 
 				myValue = new InternalNode(id, labels, properties);
 			} else if (value instanceof Relationship) {

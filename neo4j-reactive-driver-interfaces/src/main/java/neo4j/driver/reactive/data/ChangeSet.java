@@ -25,7 +25,7 @@ public class ChangeSet<T> {
 
 	@Override
 	public String toString() {
-		return String.format("ChangeSet [%n  positive = { %s }\n  negative = { %s }%n]", formatRecords(positive), formatRecords(negative));
+		return String.format("ChangeSet [%n  positive = { %s }%n  negative = { %s }%n]", formatRecords(positive), formatRecords(negative));
 	}
 
 	private String formatRecords(Multiset<T> records) {
