@@ -25,7 +25,7 @@ import neo4j.driver.reactive.interfaces.RecordChangeSetListener;
 public class Neo4jReactiveSession implements ReactiveSession {
 
 	private final Session session;
-	private String bookmark;
+	private String bookmark = "";
 
 	private final Map<String, String> querySpecifications = Maps.newHashMap();
 	private final Map<String, Multiset<Record>> queryResults = Maps.newHashMap();

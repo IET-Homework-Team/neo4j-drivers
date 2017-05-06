@@ -18,6 +18,7 @@ import neo4j.driver.reactive.interfaces.ReactiveSession;
 import neo4j.driver.testkit.EmbeddedTestkitDriver;
 
 import org.neo4j.driver.v1.Statement;
+import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.internal.InternalRecord;
@@ -86,35 +87,38 @@ public class Neo4jReactiveDriverTest {
 	
 	@Test
 	public void test4() throws Exception { //catch exception on existing query, if session is open
+		session.reset();
 		if (session.isOpen())
 		try{
 			final String PERSONS_QUERY = "persons";
 			session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
 			session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
 		} catch (IllegalStateException e) {}
+		session.reset();
 	}
 	
 	@Test
 	public void test5() throws Exception { //test different run options than map
 		try {
 			Transaction tx = session.beginTransaction("Used a statement.");
-			Statement stat = new Statement("CREATE (a:Person {name:'Bob'})");
-			session.run(stat);
+			Statement stat = new Statement("CREATE (a:Person {name:'Bob'}) RETURN a.name AS name");
+			StatementResult result = session.run(stat);
 			tx.success();
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a statement."));
 			
-			/*//not finished
+			//note, this is the record
 			tx = session.beginTransaction("Used a record.");
-			Record rec;
-			session.run("CREATE (a:Person {name: $rec})",rec);
+			Record rec = result.next();
+			session.run("CREATE (a:Person {name:$name})",rec);
 			tx.success();
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a record."));
 			
+			/*//OVERWRITE THIS, value not finsihed
 			tx = session.beginTransaction("Used a value.");
-			Value val;
-			session.run("CREATE (a:Person {name: $val})",val);
+			Value val = rec.get(0);  //this returns with a Value
+			session.run("CREATE (a:Person {name: $name})",val);
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a value."));
 			*/
@@ -122,16 +126,15 @@ public class Neo4jReactiveDriverTest {
 			tx = session.beginTransaction("This is not empty.");
 			session.reset(); //Simulate that the session somehow reset.
 			if(session.lastBookmark().equals(""))
-			tx.failure();	
+			tx.failure();
+			
+			tx.typeSystem(); //To end the test, we throw an exception
 		} catch (UnsupportedOperationException e) {}
 		session.close();
 	}
 	
 	@Test
-	public void test6() throws Exception { //test exceptions	
-		try{
-			session.typeSystem();
-		} catch (UnsupportedOperationException e) {}
+	public void test6() throws Exception { //test exceptions on the transaction	
 		TransactionWork tw = null;
 		try{
 			session.readTransaction(tw);	
