@@ -60,7 +60,7 @@ public class EmbeddedTestkitStatementResult implements StatementResult {
 
 	@Override
 	public <T> List<T> list(Function<Record, T> mapFunction) {
-		return new ArrayList<T>();
+		return new ArrayList<>();
 	}
 
 	@Override
