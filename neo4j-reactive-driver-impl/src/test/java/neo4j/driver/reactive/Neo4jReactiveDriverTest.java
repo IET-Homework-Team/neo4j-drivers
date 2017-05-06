@@ -20,9 +20,9 @@ import neo4j.driver.testkit.EmbeddedTestkitDriver;
 import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 
 import org.neo4j.driver.v1.Statement;
-import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
+import org.neo4j.driver.v1.types.TypeSystem;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.internal.InternalRecord;
 import org.neo4j.driver.internal.value.InternalValue;
@@ -133,8 +133,8 @@ public class Neo4jReactiveDriverTest {
 			if(session.lastBookmark().equals(""))
 			tx.failure();
 			
-			session.typeSystem(); //To end the test, we throw an exception
-		} catch(UnsupportedOperationException e) {} //catch (UnsupportedOperationException e) {}
+			TypeSystem ts = session.typeSystem(); //To end the test, we throw an exception
+		} catch(UnsupportedOperationException e) {}
 		session.close();
 	}
 	
