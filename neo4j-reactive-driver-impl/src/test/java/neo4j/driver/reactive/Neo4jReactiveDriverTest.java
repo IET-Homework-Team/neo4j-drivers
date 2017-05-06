@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.Transaction;
+import org.neo4j.driver.v1.TransactionWork;
 import org.neo4j.driver.v1.Value;
 
 import neo4j.driver.reactive.impl.Neo4jReactiveDriver;
@@ -121,11 +122,22 @@ public class Neo4jReactiveDriverTest {
 			tx = session.beginTransaction("This is not empty.");
 			session.reset(); //Simulate that the session somehow reset.
 			if(session.lastBookmark().equals(""))
-			tx.failure();
-			
+			tx.failure();	
 		} catch (UnsupportedOperationException e) {}
 		session.close();
 	}
 	
-
+	@Test
+	public void test6() throws Exception { //test exceptions	
+		try{
+			session.typeSystem();
+		} catch (UnsupportedOperationException e) {}
+		TransactionWork tw = null;
+		try{
+			session.readTransaction(tw);	
+		} catch(UnsupportedOperationException e){}
+		try{
+			session.writeTransaction(tw);	
+		} catch(UnsupportedOperationException e){}
+	}
 }
