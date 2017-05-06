@@ -19,7 +19,11 @@ import org.neo4j.driver.v1.types.Relationship;
 import com.google.common.base.Joiner;
 
 public class PrettyPrinter {
-
+	
+	private PrettyPrinter() {
+		//Fits the description of a utility class. -> Hiding public default constructor.
+	}
+	
 	public static String toString(List<Entity> entities) {
 		final List<String> result = new ArrayList<>(entities.size());
 

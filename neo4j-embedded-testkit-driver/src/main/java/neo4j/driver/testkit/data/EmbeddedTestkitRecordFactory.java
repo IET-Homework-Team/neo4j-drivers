@@ -23,7 +23,11 @@ import scala.collection.JavaConversions;
 import scala.collection.convert.Wrappers;
 
 public class EmbeddedTestkitRecordFactory {
-
+	
+	private EmbeddedTestkitRecordFactory() {
+		//Fits the description of a utility class. -> Hiding public default constructor.
+	}
+	
 	public static Record create(Map<String, Object> element) {
 		final List<String> keys = new ArrayList<>(element.size());
 		final List<Value> values = new ArrayList<>(element.size());

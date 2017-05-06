@@ -39,8 +39,8 @@ public class EmbeddedTestkitSession implements Session {
 	@Override
 	public StatementResult run(String statementTemplate, Map<String, Object> statementParameters) {
 		final Result internalResult = gds.execute(statementTemplate, statementParameters);
-		final EmbeddedTestkitStatementResult driverResult = new EmbeddedTestkitStatementResult(internalResult);
-		return driverResult;
+		
+		return new EmbeddedTestkitStatementResult(internalResult);
 	}
 
 	@Override
@@ -61,9 +61,8 @@ public class EmbeddedTestkitSession implements Session {
 	@Override
 	public StatementResult run(Statement statement) {
 		final Result internalResult = gds.execute(statement.text());
-		final EmbeddedTestkitStatementResult driverResult = new EmbeddedTestkitStatementResult(internalResult);
-
-		return driverResult;
+		
+		return new EmbeddedTestkitStatementResult(internalResult);
 	}
 
 	@Override
