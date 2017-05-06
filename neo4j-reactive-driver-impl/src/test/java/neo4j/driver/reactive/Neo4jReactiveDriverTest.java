@@ -95,11 +95,10 @@ public class Neo4jReactiveDriverTest {
 	
 	@Test
 	public void test5() throws Exception { //test different run options than map
-		session.reset();
 		try {
 			Transaction tx = session.beginTransaction("Used a statement.");
 			Statement stat = new Statement("CREATE (a:Person {name:'Bob'})");
-			tx.run(stat);
+			session.run(stat);
 			tx.success();
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a statement."));
@@ -107,18 +106,23 @@ public class Neo4jReactiveDriverTest {
 			/*//not finished
 			tx = session.beginTransaction("Used a record.");
 			Record rec;
-			tx.run("CREATE (a:Person {name: $rec})",rec);
+			session.run("CREATE (a:Person {name: $rec})",rec);
 			tx.success();
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a record."));
 			
 			tx = session.beginTransaction("Used a value.");
 			Value val;
-			tx.run("CREATE (a:Person {name: $val})",val);
+			session.run("CREATE (a:Person {name: $val})",val);
+			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a value."));
 			*/
 			
-			//tx.failure();
+			tx = session.beginTransaction("This is not empty.");
+			session.reset(); //Simulate that the session somehow reset.
+			if(session.lastBookmark().equals(""))
+			tx.failure();
+			
 		} catch (UnsupportedOperationException e) {}
 		session.close();
 	}
