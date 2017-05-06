@@ -1,6 +1,19 @@
 language: java
 jdk:
   - oraclejdk8
+addons:
+  sonarqube:
+    organization: "iet-homework-team"
+    token:
+      secure: "pokyp3TF9i60kATAItBl3LaCy7sMi5biYL3Ppo9Fn609zhhLT6qN5L62lwVAzvzcenWEeH+RpM1W+qG3OyvhmVNkpNgcGN+Ercfeidbci0qS4o54rCfJFwe2l2+NEiB3/rCC73AH9RgsnDt4kA191ujvOyh4vrIB0c4VoT4JxbffOLDSD+yTqSdUrwQXH28kS2ZFXLct9y0dnyZtu0mjKWo/E6O7vW7t9BuEASXk7idS70v6JbZvHLyjFGPNKvdxbNQkHSYscDUsU1zNeIJEIH8ggiSI4x0AE8J1vgRsYzYUdIIonySoRRIiGD8B/Wd075Q+bR6u9aNDSWBpMLPj6wWsvyBNFpPkMI4J5SBXimvZHQAoU4Yf8I87EQUUrSM49ojFmuiY2YVyx6m42l9ezEumEIBK/zozaWF5nCMflz/UzVe3ZQYmtpVHSnKacsKAk6mJQaX5hQiN5SeL1ED4W0pJQwoVgLnKdRk4L0C3f1Wy0gC22b2Z3LExUUh698+oI/FMmH2p7j3HTK59rqQWM9lJdFWUE8Oy/aJs6ovKDG6G8YsR76W9Uj7YU2xGLPkTiS930IMN0Q/UW5XEuiluJpcwrAHyfjP2TVCVQGW+6a441zi/5mrulR416aiYcCC/gRhdsGPm0r32nL8taKlymHi6sy+n089a3+ohy9pZTic="
+script:
+  - ./gradlew sonarqube
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
+    - '$HOME/.gradle'
+    - '.gradle'
 after_success:
   - ./gradlew jacocoTestReport
   - bash <(curl -s https://codecov.io/bash)
