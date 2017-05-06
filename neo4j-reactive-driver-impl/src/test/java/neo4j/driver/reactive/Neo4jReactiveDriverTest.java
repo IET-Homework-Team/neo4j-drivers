@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.neo4j.driver.v1.Values.parameters;
 
 import java.util.List;
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +17,11 @@ import neo4j.driver.reactive.impl.Neo4jReactiveDriver;
 import neo4j.driver.reactive.interfaces.ReactiveDriver;
 import neo4j.driver.reactive.interfaces.ReactiveSession;
 import neo4j.driver.testkit.EmbeddedTestkitDriver;
+import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 
 import org.neo4j.driver.v1.Statement;
 import org.neo4j.driver.v1.Value;
+import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.internal.InternalRecord;
 import org.neo4j.driver.internal.value.InternalValue;
@@ -104,20 +107,22 @@ public class Neo4jReactiveDriverTest {
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a statement."));
 			
-			/*//not finished
+			
 			tx = session.beginTransaction("Used a record.");
-			Record rec;
-			session.run("CREATE (a:Person {name: $rec})",rec);
+			HashMap<String, Object> testElement = new HashMap<>();
+			testElement.put("name", "Bob");
+			Record rec = EmbeddedTestkitRecordFactory.create(testElement);
+			session.run("CREATE (a:Person {name: $name})",rec);
 			tx.success();
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a record."));
 			
 			tx = session.beginTransaction("Used a value.");
-			Value val;
-			session.run("CREATE (a:Person {name: $val})",val);
+			Value val = Values.parameters("name", "Bob");
+			session.run("CREATE (a:Person {name: $name})",val);
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a value."));
-			*/
+			
 			
 			tx = session.beginTransaction("This is not empty.");
 			session.reset(); //Simulate that the session somehow reset.
