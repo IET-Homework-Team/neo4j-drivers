@@ -73,5 +73,11 @@ public class Neo4jReactiveDriverTest {
 		session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
 		runUpdate(session, "CREATE (a:Person {name: $name})", parameters("name", "Bob"));
 	}
+	
+	@Test
+	public void test4() throws Exception {
+	//this is empty	
+	}
+	
 
 }
