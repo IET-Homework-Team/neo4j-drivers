@@ -29,5 +29,9 @@ public class PrettyPrintingNodeTest {
 		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
 		System.out.println(PrettyPrinter.toString(rel));
 	}
+	
+	@Test
+	public void emptyTest(){
+	}
 
 }
