@@ -104,8 +104,8 @@ public class Neo4jReactiveDriverTest {
 	public void test5() throws Exception { //test different run options than map
 		try {
 			Transaction tx = session.beginTransaction("Used a statement.");
-			Statement stat = new Statement("CREATE (a:Person {name:'Bob'}) RETURN a.name AS name");
-			StatementResult result = session.run(stat);
+			Statement stat = new Statement("CREATE (a:Person {name:'Bob'})");
+			session.run(stat);
 			tx.success();
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a statement."));
@@ -133,8 +133,8 @@ public class Neo4jReactiveDriverTest {
 			if(session.lastBookmark().equals(""))
 			tx.failure();
 			
-			tx.typeSystem(); //To end the test, we throw an exception
-		} catch (UnsupportedOperationException e) {}
+			session.typeSystem(); //To end the test, we throw an exception
+		} catch(UnsupportedOperationException e) {} //catch (UnsupportedOperationException e) {}
 		session.close();
 	}
 	
