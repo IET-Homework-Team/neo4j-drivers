@@ -1,6 +1,7 @@
 package neo4j.driver.testkit;
 
 import java.util.Collections;
+import java.util.Map;
 
 import org.neo4j.driver.v1.AccessMode;
 import org.neo4j.driver.v1.Record;
