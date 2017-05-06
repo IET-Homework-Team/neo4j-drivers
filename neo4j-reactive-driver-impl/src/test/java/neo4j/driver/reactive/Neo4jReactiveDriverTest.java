@@ -75,9 +75,15 @@ public class Neo4jReactiveDriverTest {
 	}
 	
 	@Test
-	public void test4() throws Exception {
-	//this is empty	
+	public void test4() throws Exception { //catch exception on existing query, if session is open
+		if (session.isOpen())
+		try{
+			final String PERSONS_QUERY = "persons";
+			session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
+			session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
+		} catch (IllegalStateException e) {}
 	}
+	
 	
 
 }
