@@ -14,14 +14,20 @@ import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
 import org.neo4j.graphdb.Entity;
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.driver.v1.types.Relationship;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.driver.v1.util.Function;
+import org.neo4j.test.TestGraphDatabaseFactory;
 
 import com.google.common.collect.ImmutableMap;
 
 import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 
 public class EmbeddedTestkitRecordFactoryTest {
+	enum TestRelationshipTypes implements RelationshipType { CONTAINED_IN, KNOWS }
+	
 	private class UnsupportedTestClass implements Entity, AsValue
 	{
 		@Override
@@ -65,12 +71,18 @@ public class EmbeddedTestkitRecordFactoryTest {
 	//Test with a Relationship instance
 	@Test
 	public void test1() {
-		Map<String, Value> relationshipProperties = ImmutableMap.of("weight", Values.value(2));
-		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
+		GraphDatabaseService gds = new TestGraphDatabaseFactory().newImpermanentDatabase();
+		Transaction tx = gds.beginTx();
+		Node node1 = gds.createNode();
+		Node node2 = gds.createNode();
+		Relationship n1n2rel = node1.createRelationshipTo(node2, TestRelationshipTypes.KNOWS);
 		
-		Map<String, Object> testElementList = ImmutableMap.of("Rel", rel);
+		Map<String, Object> testElementList = ImmutableMap.of("Rel", n1n2rel);
 		
 		Record rec = EmbeddedTestkitRecordFactory.create(testElementList);
+		
+		tx.success();
+		tx.close();
 	}
 	
 	//Test with an unsupported class
