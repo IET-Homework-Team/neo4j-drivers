@@ -17,6 +17,9 @@ import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.types.Entity;
 import org.neo4j.driver.v1.types.Node;
 import org.neo4j.driver.v1.types.Relationship;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.test.TestGraphDatabaseFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -25,28 +28,40 @@ import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 import neo4j.driver.util.PrettyPrinter;
 
 public class PrettyPrintingNodeTest {
-
 	@Test
 	public void testName() throws Exception {
+		//Node
 		List<String> labels = ImmutableList.of("Person");
 		Map<String, Value> nodeProperties = ImmutableMap.of("name", Values.value("John Doe"));
 		Node node = new InternalNode(1, labels, nodeProperties);
 		
-		final String result1 = PrettyPrinter.toString(node);
+		final String resultForNode = PrettyPrinter.toString(node);
 		
-		System.out.println(result1);
+		System.out.println(resultForNode);
 		
-		assertTrue(result1.equals("(:Person {name: \"John Doe\"})"));
+		assertTrue(resultForNode.equals("(:Person {name: \"John Doe\"})"));
 		
-
+		
+		//Empty Node
+		nodeProperties = ImmutableMap.of();
+		node = new InternalNode(1, labels, nodeProperties);
+		
+		final String resultForEmptyNode = PrettyPrinter.toString(node);
+		
+		System.out.println(resultForEmptyNode);
+		
+		assertTrue(resultForEmptyNode.equals("(:Person)"));
+		
+		
+		//Relationship
 		Map<String, Value> relationshipProperties = ImmutableMap.of("weight", Values.value(2));
 		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
 		
-		final String result2 = PrettyPrinter.toString(rel);
+		final String resultForRelationship = PrettyPrinter.toString(rel);
 		
-		System.out.println(result2);
+		System.out.println(resultForRelationship);
 		
-		assertTrue(result2.equals("(1)-[:REL {weight: 2}]-(2)"));
+		assertTrue(resultForRelationship.equals("(1)-[:REL {weight: 2}]-(2)"));
 		
 		
 	}
@@ -61,20 +76,20 @@ public class PrettyPrintingNodeTest {
 		testEntityList.add(node);
 		
 		//With a single list element
-		final String resultSingleNode = PrettyPrinter.toString(testEntityList);
+		final String resultForSingleNode = PrettyPrinter.toString(testEntityList);
 		
-		System.out.println(resultSingleNode);
+		System.out.println(resultForSingleNode);
 		
-		assertTrue(resultSingleNode.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"})]"));
+		assertTrue(resultForSingleNode.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"})]"));
 		
 		//With multiple elements
 		testEntityList.add(node);
 		
-		final String resultMultipleNodes = PrettyPrinter.toString(testEntityList);
+		final String resultForMultipleNodes = PrettyPrinter.toString(testEntityList);
 		
-		System.out.println(resultMultipleNodes);
+		System.out.println(resultForMultipleNodes);
 		
-		assertTrue(resultMultipleNodes.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"}),(:Person {name: \"John \"Escaped Quotes\" Doe\"})]"));
+		assertTrue(resultForMultipleNodes.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"}),(:Person {name: \"John \"Escaped Quotes\" Doe\"})]"));
 	}
 	
 	//Test with Relationship list
@@ -86,20 +101,20 @@ public class PrettyPrintingNodeTest {
 		testEntityList.add(rel);
 		
 		//With a single list element
-		final String resultSingleRelationship = PrettyPrinter.toString(testEntityList);
+		final String resultForSingleRelationship = PrettyPrinter.toString(testEntityList);
 		
-		System.out.println(resultSingleRelationship);
+		System.out.println(resultForSingleRelationship);
 		
-		assertTrue(resultSingleRelationship.equals("[(1)-[:REL {weight: 2}]-(2)]"));
+		assertTrue(resultForSingleRelationship.equals("[(1)-[:REL {weight: 2}]-(2)]"));
 		
 		//With multiple elements
 		testEntityList.add(rel);
 		
-		final String resultMultipleRelationships = PrettyPrinter.toString(testEntityList);
+		final String resultForMultipleRelationships = PrettyPrinter.toString(testEntityList);
 		
-		System.out.println(resultMultipleRelationships);
+		System.out.println(resultForMultipleRelationships);
 		
-		assertTrue(resultMultipleRelationships.equals("[(1)-[:REL {weight: 2}]-(2),(1)-[:REL {weight: 2}]-(2)]"));
+		assertTrue(resultForMultipleRelationships.equals("[(1)-[:REL {weight: 2}]-(2),(1)-[:REL {weight: 2}]-(2)]"));
 	}
 	
 	//Test with Record
@@ -117,7 +132,7 @@ public class PrettyPrintingNodeTest {
 	
 	//Tests with different Value classes
 	@Test
-	public void testWithValue() {
+	public void testWithValueClasses() {
 		//NodeValue
 		List<String> labels = ImmutableList.of("Person");
 		Map<String, Value> nodeProperties = ImmutableMap.of("name", Values.value("John Doe"));
@@ -138,7 +153,8 @@ public class PrettyPrintingNodeTest {
 		System.out.println(resultForRelationshipValue);
 		
 		
-		//TODO: Missing test for the PathValue type
+		//Missing test for the PathValue type
+		//...
 	}
 	
 	//Test with a Relationship instance without properties
