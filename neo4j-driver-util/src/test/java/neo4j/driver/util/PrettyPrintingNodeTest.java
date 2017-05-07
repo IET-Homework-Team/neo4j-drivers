@@ -2,11 +2,13 @@ package neo4j.driver.util;
 
 import static org.junit.Assert.*;
 
+import java.lang.Iterable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.neo4j.driver.internal.AsValue;
 import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.internal.InternalRelationship;
 import org.neo4j.driver.internal.value.NodeValue;
@@ -18,6 +20,7 @@ import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.types.Entity;
 import org.neo4j.driver.v1.types.Node;
 import org.neo4j.driver.v1.types.Relationship;
+import org.neo4j.driver.v1.util.Function;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.test.TestGraphDatabaseFactory;
@@ -29,6 +32,43 @@ import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 import neo4j.driver.util.PrettyPrinter;
 
 public class PrettyPrintingNodeTest {
+	private class UnsupportedTestEntity implements Entity, AsValue
+	{
+		@Override
+		public long id() { return 0; }
+
+		@Override
+		public Iterable<String> keys() { return null; }
+
+		@Override
+		public boolean containsKey(String key) { return false; }
+
+		@Override
+		public Value get(String key) { return null; }
+
+		@Override
+		public int size() { return 0; }
+
+		@Override
+		public Iterable<Value> values() { return null; }
+
+		@Override
+		public <T> Iterable<T> values(Function<Value, T> mapFunction) { return null; }
+
+		@Override
+		public Map<String, Object> asMap() { return null; }
+
+		@Override
+		public <T> Map<String, T> asMap(Function<Value, T> mapFunction) { return null; }
+		
+		
+		@Override
+		public Value asValue()
+		{
+			return Values.value(false);
+		}
+	}
+	
 	@Test
 	public void testName() throws Exception {
 		//Node
@@ -63,8 +103,6 @@ public class PrettyPrintingNodeTest {
 		System.out.println(resultForRelationship);
 		
 		assertTrue(resultForRelationship.equals("(1)-[:REL {weight: 2}]-(2)"));
-		
-		
 	}
 	
 	//Test with Node list
@@ -116,6 +154,30 @@ public class PrettyPrintingNodeTest {
 		System.out.println(resultForMultipleRelationships);
 		
 		assertTrue(resultForMultipleRelationships.equals("[(1)-[:REL {weight: 2}]-(2),(1)-[:REL {weight: 2}]-(2)]"));
+	}
+	
+	//Test with UnsupportedTestEntity list
+	@Test
+	public void testWithUnsupportedEntityList() {
+		UnsupportedTestEntity entity = new UnsupportedTestEntity();
+		List<Entity> testEntityList = new ArrayList<>();
+		testEntityList.add(entity);
+		
+		//With a single list element
+		final String resultForSingleUnsupportedEntity = PrettyPrinter.toString(testEntityList);
+		
+		System.out.println(resultForSingleUnsupportedEntity);
+		
+		assertTrue(resultForSingleUnsupportedEntity.equals("[]"));
+		
+		//With multiple elements
+		testEntityList.add(entity);
+		
+		final String resultForMultipleUnsupportedEntities = PrettyPrinter.toString(testEntityList);
+		
+		System.out.println(resultForMultipleUnsupportedEntities);
+		
+		assertTrue(resultForMultipleUnsupportedEntities.equals("[]"));
 	}
 	
 	//Test with Record
