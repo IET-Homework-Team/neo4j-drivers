@@ -190,6 +190,7 @@ public class EmbeddedTestkitDriverTest {
 					assertTrue(sr.hasNext()==true); //it has two nexts
 					assertTrue(sr.consume()==null);
 					assertTrue(sr.summary()==null);
+					assertTrue(sr.list(null)==null); //expecting function call, with null return value
 					try{
 						sr.peek();
 					} catch(UnsupportedOperationException e){}
@@ -202,6 +203,7 @@ public class EmbeddedTestkitDriverTest {
 					
 					EmbeddedTestkitStatementResult sr2 = (EmbeddedTestkitStatementResult) statementResult2;
 					List<Record> rec = sr2.list(); //test listing, this is separate
+					
 				}
 			}
 		}
