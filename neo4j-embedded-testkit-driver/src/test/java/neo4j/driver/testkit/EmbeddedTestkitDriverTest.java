@@ -190,7 +190,7 @@ public class EmbeddedTestkitDriverTest {
 					assertTrue(sr.hasNext()==true); //it has two nexts
 					assertTrue(sr.consume()==null);
 					assertTrue(sr.summary()==null);
-					assertTrue(sr.list(null)==null); //expecting function call, with null return value
+					assertTrue(sr.list(null).size()==0); //expecting function call, with a zero size list as the return value
 					try{
 						sr.peek();
 					} catch(UnsupportedOperationException e){}
