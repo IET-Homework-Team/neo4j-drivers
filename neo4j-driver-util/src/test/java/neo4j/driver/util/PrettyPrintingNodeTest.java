@@ -121,14 +121,16 @@ public class PrettyPrintingNodeTest {
 		
 		assertTrue(resultForSingleNode.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"})]"));
 		
-		//With multiple elements
+		//With multiple elements in a way that the second element has no properties
+		nodeProperties = ImmutableMap.of();
+		node = new InternalNode(1, labels, nodeProperties);
 		testEntityList.add(node);
 		
 		final String resultForMultipleNodes = PrettyPrinter.toString(testEntityList);
 		
 		System.out.println(resultForMultipleNodes);
 		
-		assertTrue(resultForMultipleNodes.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"}),(:Person {name: \"John \"Escaped Quotes\" Doe\"})]"));
+		assertTrue(resultForMultipleNodes.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"}),(:Person)]"));
 	}
 	
 	//Test with Relationship list
