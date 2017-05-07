@@ -12,6 +12,7 @@ import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Transaction;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.test.TestGraphDatabaseFactory;
 
 import neo4j.driver.util.PrettyPrinter;
 
@@ -66,8 +67,7 @@ public class EmbeddedTestkitDriverTest {
 	}
 	
 	@Test
-	public void test0() { //EmbeddedTestkitDriver tests
-		GraphDatabaseService gds = null;
+	public void test0() { //EmbeddedTestkitDriver tests, EmbeddedTestkitTransaction tests 
 		File f = null;
 		Driver drivertest = new EmbeddedTestkitDriver(f); //create with a file
 		GraphDatabaseService returned=((EmbeddedTestkitDriver) drivertest).getUnderlyingDatabaseService();
@@ -78,12 +78,61 @@ public class EmbeddedTestkitDriverTest {
 		try (Session session2 = drivertest.session(am,"Bookmark2")) {
 		} catch(UnsupportedOperationException e){} //catch another exception
 		
-		try (Driver driver = new EmbeddedTestkitDriver(gds)) { //create with a gds
-			if(!driver.isEncrypted())
-			try (Session session = driver.session()) { //create a session, other functions already tested
+		GraphDatabaseService gds = null;
+		try (Driver driver1 = new EmbeddedTestkitDriver(gds)) { //create with a gds
+			if(!driver1.isEncrypted())
+			try (Session session = driver1.session()) {
+				try (Transaction transaction = session.beginTransaction()) { //Transaction tests
+					if(transaction.isOpen()){
+						session.run("CREATE (n:Label)");
+						transaction.success(); //if we are here, it was successful
+					}
+				}
+				try (Transaction transaction2 = session.beginTransaction()) { //Transaction tests
+					if(transaction2.isOpen()){
+						session.run("CREATE (n:Label)");
+						transaction2.failure(); //we simulate a failed transaction
+					}
+				}
+			}
+		}
+			
+		gds = new TestGraphDatabaseFactory().newImpermanentDatabase();	
+		try (Driver driver2 = new EmbeddedTestkitDriver(gds)) { //create with a non-empty gds
+		} //empty on purpose
+	}
+	
+
+	@Test
+	public void test1() { //EmbeddedTestkitSession UnsupportedOperationExceptions
+		try (Driver driver = new EmbeddedTestkitDriver()) {
+			try (Session session = driver.session()) {
+				try (Transaction tx = session.beginTransaction("Bookmark")) {
+				} catch(UnsupportedOperationException e) {}
+				try (Transaction tx = session.beginTransaction()) { //only this creates a transaction
+					try{ 
+						tx.typeSystem(); //note
+					} catch(UnsupportedOperationException e){}
+					try{ 
+						session.typeSystem(); //note, check these, didn't work in the other test!
+					} catch(UnsupportedOperationException e){}
+					try{
+						session.lastBookmark();
+					} catch(UnsupportedOperationException e){}
+					try{
+						session.reset();
+					} catch(UnsupportedOperationException e){}
+					try{
+						session.readTransaction(null);
+					} catch(UnsupportedOperationException e){}
+					try{
+						session.writeTransaction(null);
+					} catch(UnsupportedOperationException e){}
+				}
 			}
 		}
 	}
+	
 	
 	
 	
