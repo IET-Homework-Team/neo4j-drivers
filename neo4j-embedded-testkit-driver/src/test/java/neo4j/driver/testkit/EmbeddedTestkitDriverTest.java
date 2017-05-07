@@ -4,9 +4,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.neo4j.graphdb.Result;
 import org.neo4j.driver.v1.AccessMode;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.Record;
@@ -16,10 +18,14 @@ import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Transaction;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
+import org.neo4j.driver.v1.exceptions.NoSuchRecordException;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
+import com.google.common.collect.ImmutableMap;
+
 import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
+import neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
 import neo4j.driver.util.PrettyPrinter;
 
 public class EmbeddedTestkitDriverTest {
@@ -162,6 +168,40 @@ public class EmbeddedTestkitDriverTest {
 		}
 	}
 	
-	
+	@Test
+	public void test3() { //tests for data	
+		
+		StatementResult statementResult; //create a resultset
+		try (Driver driver = new EmbeddedTestkitDriver()) {
+			try (Session session = driver.session()) {
+				try (Transaction transaction = session.beginTransaction()) {
+					session.run("CREATE (n:Label)");
+					statementResult = session.run("MATCH (n:Label) RETURN n");
+					while (statementResult.hasNext()) {
+						Record record = statementResult.next();
+						System.out.println(PrettyPrinter.toString(record));
+					}
+				}
+			}
+		}
+		
+		Result r = null;
+		EmbeddedTestkitStatementResult srtest = new EmbeddedTestkitStatementResult(r); //create with a record
+		
+		EmbeddedTestkitStatementResult sr = (EmbeddedTestkitStatementResult) statementResult;
+		assertTrue(sr.keys().size()==1); //it has one Label in it
+		assertTrue(sr.hasNext()==false); //doesnt have a next value (we already went throught it)
+		assertTrue(sr.consume()==null);
+		assertTrue(sr.summary()==null);
+		try{
+			sr.peek();
+		} catch(UnsupportedOperationException e){}
+		try{
+		sr.single();
+		} catch (NoSuchRecordException e) {} //Result is empty
+		
+		List<Record> rec = sr.list();
+		
+	}
 	
 }
