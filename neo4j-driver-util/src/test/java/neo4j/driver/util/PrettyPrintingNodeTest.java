@@ -137,7 +137,7 @@ public class PrettyPrintingNodeTest {
 		List<String> labels = ImmutableList.of("Person");
 		Map<String, Value> nodeProperties = ImmutableMap.of("name", Values.value("John Doe"));
 		Node node = new InternalNode(1, labels, nodeProperties);
-		Value value = new NodeValue(node);
+		Value value = EmbeddedTestkitRecordFactory.convert(node);
 		
 		final String resultForNodeValue = PrettyPrinter.toString(value);
 		
@@ -146,7 +146,7 @@ public class PrettyPrintingNodeTest {
 		//RelationshipValue
 		Map<String, Value> relationshipProperties = ImmutableMap.of("weight", Values.value(2));
 		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
-		value = new RelationshipValue(rel);
+		value = EmbeddedTestkitRecordFactory.convert(rel);
 		
 		final String resultForRelationshipValue = PrettyPrinter.toString(value);
 		

@@ -180,33 +180,32 @@ public class EmbeddedTestkitDriverTest {
 		try (Driver driver = new EmbeddedTestkitDriver()) {
 			try (Session session = driver.session()) {
 				try (Transaction transaction = session.beginTransaction()) {
-					session.run("CREATE (n:Label)");
+					session.run("CREATE (n1:Label),(n2:Label)"); //two objects
 					statementResult = session.run("MATCH (n:Label) RETURN n");
-					while (statementResult.hasNext()) {
-						Record record = statementResult.next();
-						System.out.println(PrettyPrinter.toString(record));
-					}
+					
+					EmbeddedTestkitStatementResult sr = (EmbeddedTestkitStatementResult) statementResult;
+					assertTrue(sr.keys().size()==1); //it has one column
+					assertTrue(sr.hasNext()==true); //it has two nexts
+					assertTrue(sr.consume()==null);
+					assertTrue(sr.summary()==null);
+					try{
+						sr.peek();
+					} catch(UnsupportedOperationException e){}
+					
+					try{
+						Record a = sr.single(); //returns
+						Record b = sr.single(); //returns
+					    sr.single(); //exception
+					} catch (NoSuchRecordException e) {} //Result is empty
+					
+					EmbeddedTestkitStatementResult sr2 = (EmbeddedTestkitStatementResult) statementResult;
+					List<Record> rec = sr2.list(); //test listing, this is separate
 				}
 			}
 		}
 		
 		Result r = null;
 		EmbeddedTestkitStatementResult srtest = new EmbeddedTestkitStatementResult(r); //create with a record
-		
-		EmbeddedTestkitStatementResult sr = (EmbeddedTestkitStatementResult) statementResult;
-		assertTrue(sr.keys().size()==1); //it has one Label in it
-		assertTrue(sr.hasNext()==false); //doesnt have a next value (we already went throught it)
-		assertTrue(sr.consume()==null);
-		assertTrue(sr.summary()==null);
-		try{
-			sr.peek();
-		} catch(UnsupportedOperationException e){}
-		try{
-		sr.single();
-		} catch (NoSuchRecordException e) {} //Result is empty
-		
-		List<Record> rec = sr.list();
-		
 	}
 	
 }
