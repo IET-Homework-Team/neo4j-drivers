@@ -73,13 +73,17 @@ public class EmbeddedTestkitRecordFactoryTest {
 	public void test1() {
 		GraphDatabaseService gds = new TestGraphDatabaseFactory().newImpermanentDatabase();
 		Transaction tx = gds.beginTx();
+		
+		
 		Node node1 = gds.createNode();
+		node1.setProperty("Alma", true);
 		Node node2 = gds.createNode();
 		Relationship n1n2rel = node1.createRelationshipTo(node2, TestRelationshipTypes.KNOWS);
 		
-		Map<String, Object> testElementList = ImmutableMap.of("Rel", n1n2rel);
+		Map<String, Object> testElementList = ImmutableMap.of("Node1", node1, "Node2", node2, "Rel", n1n2rel);
 		
 		Record rec = EmbeddedTestkitRecordFactory.create(testElementList);
+		
 		
 		tx.success();
 		tx.close();
