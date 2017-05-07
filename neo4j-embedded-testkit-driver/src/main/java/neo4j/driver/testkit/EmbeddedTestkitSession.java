@@ -20,7 +20,6 @@ import com.google.common.collect.Multiset;
 import neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
 
 public class EmbeddedTestkitSession implements Session {
-
 	private final GraphDatabaseService gds;
 
 	public EmbeddedTestkitSession(GraphDatabaseService gds, AccessMode mode) {

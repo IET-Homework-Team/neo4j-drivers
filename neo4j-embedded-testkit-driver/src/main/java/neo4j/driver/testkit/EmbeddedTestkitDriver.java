@@ -22,10 +22,16 @@ public class EmbeddedTestkitDriver implements Driver {
 	}
 
 	public EmbeddedTestkitDriver(final GraphDatabaseService gds) {
+		if(gds==null) //if we get a null gds, we create a new instance
+		this.gds = new TestGraphDatabaseFactory().newImpermanentDatabase();	
+		else
 		this.gds = gds;
 	}
 
 	public EmbeddedTestkitDriver(final File storeDir) {
+		if(storeDir==null) //if we get a null file, we create a new instance, like above
+		gds = new TestGraphDatabaseFactory().newImpermanentDatabase();	
+		else
 		gds = new GraphDatabaseFactory().newEmbeddedDatabase(storeDir);
 	}
 
