@@ -177,11 +177,13 @@ public class EmbeddedTestkitDriverTest {
 	public void test3() { //tests for data	
 		
 		StatementResult statementResult; //create a resultset
+		StatementResult statementResult2; //another one for another set
 		try (Driver driver = new EmbeddedTestkitDriver()) {
 			try (Session session = driver.session()) {
 				try (Transaction transaction = session.beginTransaction()) {
 					session.run("CREATE (n1:Label),(n2:Label)"); //two objects
-					statementResult = session.run("MATCH (n:Label) RETURN n");
+					statementResult = session.run("MATCH (n:Label) RETURN n"); //two result sets
+					statementResult2 = session.run("MATCH (n:Label) RETURN n");
 					
 					EmbeddedTestkitStatementResult sr = (EmbeddedTestkitStatementResult) statementResult;
 					assertTrue(sr.keys().size()==1); //it has one column
@@ -198,7 +200,7 @@ public class EmbeddedTestkitDriverTest {
 					    sr.single(); //exception
 					} catch (NoSuchRecordException e) {} //Result is empty
 					
-					EmbeddedTestkitStatementResult sr2 = (EmbeddedTestkitStatementResult) statementResult;
+					EmbeddedTestkitStatementResult sr2 = (EmbeddedTestkitStatementResult) statementResult2;
 					List<Record> rec = sr2.list(); //test listing, this is separate
 				}
 			}
