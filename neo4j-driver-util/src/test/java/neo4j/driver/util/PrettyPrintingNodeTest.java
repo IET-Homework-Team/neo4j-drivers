@@ -9,6 +9,8 @@ import java.util.Map;
 import org.junit.Test;
 import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.internal.InternalRelationship;
+import org.neo4j.driver.internal.value.NodeValue;
+import org.neo4j.driver.internal.value.RelationshipValue;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
@@ -116,21 +118,20 @@ public class PrettyPrintingNodeTest {
 	//Tests with different Value classes
 	@Test
 	public void testWithValue() {
+		//NodeValue
 		List<String> labels = ImmutableList.of("Person");
 		Map<String, Value> nodeProperties = ImmutableMap.of("name", Values.value("John Doe"));
 		Node node = new InternalNode(1, labels, nodeProperties);
-		Iterable<Value> values = node.values();
-		Value value = values.iterator().next(); //NodeValue
+		Value value = new NodeValue(node);
 		
 		final String resultForNodeValue = PrettyPrinter.toString(value);
 		
 		System.out.println(resultForNodeValue);
 		
-		
+		//RelationshipValue
 		Map<String, Value> relationshipProperties = ImmutableMap.of("weight", Values.value(2));
 		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
-		values = rel.values();
-		value = values.iterator().next(); //RelationshipValue
+		value = new RelationshipValue(rel);
 		
 		final String resultForRelationshipValue = PrettyPrinter.toString(value);
 		
