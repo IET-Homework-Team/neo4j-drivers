@@ -19,6 +19,7 @@ import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.types.Entity;
 import org.neo4j.driver.v1.types.Node;
+import org.neo4j.driver.v1.types.Path;
 import org.neo4j.driver.v1.types.Relationship;
 import org.neo4j.driver.v1.util.Function;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -121,8 +122,12 @@ public class PrettyPrintingNodeTest {
 		
 		assertTrue(resultForSingleNode.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"})]"));
 		
-		//With multiple elements in a way that the second element has no properties
+		//With multiple elements in a way that the second element has no properties and the third one has no labels and no properties
 		nodeProperties = ImmutableMap.of();
+		node = new InternalNode(1, labels, nodeProperties);
+		testEntityList.add(node);
+		
+		labels = ImmutableList.of();
 		node = new InternalNode(1, labels, nodeProperties);
 		testEntityList.add(node);
 		
@@ -130,7 +135,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForMultipleNodes);
 		
-		assertTrue(resultForMultipleNodes.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"}),(:Person)]"));
+		assertTrue(resultForMultipleNodes.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"}),(:Person),()]"));
 	}
 	
 	//Test with Relationship list
@@ -193,6 +198,13 @@ public class PrettyPrintingNodeTest {
 		System.out.println(result);
 		
 		assertTrue(result.equals("<name=\"Bob\">"));
+	}
+	
+	//Test with Path (!not a real path, just a substitution with null, because we expect it to throw an exception)
+	@Test(expected=UnsupportedOperationException.class)
+	public void testWithPath() {
+		Path nullPath = null;
+		final String result = PrettyPrinter.toString(nullPath);
 	}
 	
 	//Tests with different Value classes
