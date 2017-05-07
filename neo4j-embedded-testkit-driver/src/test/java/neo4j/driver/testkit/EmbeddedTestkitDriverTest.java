@@ -3,17 +3,23 @@ package neo4j.driver.testkit;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 import org.neo4j.driver.v1.AccessMode;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
+import org.neo4j.driver.v1.Statement;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Transaction;
+import org.neo4j.driver.v1.Value;
+import org.neo4j.driver.v1.Values;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
+import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 import neo4j.driver.util.PrettyPrinter;
 
 public class EmbeddedTestkitDriverTest {
@@ -104,7 +110,7 @@ public class EmbeddedTestkitDriverTest {
 	
 
 	@Test
-	public void test1() { //EmbeddedTestkitSession UnsupportedOperationExceptions
+	public void test1() { //EmbeddedTestkitSession UnsupportedOperation Exceptions
 		try (Driver driver = new EmbeddedTestkitDriver()) {
 			try (Session session = driver.session()) {
 				try (Transaction tx = session.beginTransaction("Bookmark")) {
@@ -133,6 +139,28 @@ public class EmbeddedTestkitDriverTest {
 		}
 	}
 	
+	@Test
+	public void test2() { //EmbeddedTestkitSession run tests
+		try (Driver driver = new EmbeddedTestkitDriver()) {
+			try (Session session = driver.session()) {
+				if(session.isOpen())
+				try (Transaction tx = session.beginTransaction()) {
+					
+					Statement stat = new Statement("CREATE (a:Person {name:'Bob'})"); //statement
+					session.run(stat);
+					
+					Map<String, Object> testElement = new HashMap<>(); //record
+					testElement.put("name", "Bob");
+					Record rec = EmbeddedTestkitRecordFactory.create(testElement);
+					session.run("CREATE (a:Person {name: $name})",rec);
+					
+					Value val = Values.parameters("name", "Bob"); //value
+					session.run("CREATE (a:Person {name: $name})",val);
+							
+				}
+			}
+		}
+	}
 	
 	
 	
