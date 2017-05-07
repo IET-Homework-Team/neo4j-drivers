@@ -15,8 +15,6 @@ import org.neo4j.driver.v1.types.TypeSystem;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Result;
 
-import com.google.common.collect.Multiset;
-
 import neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
 
 public class EmbeddedTestkitSession implements Session {
