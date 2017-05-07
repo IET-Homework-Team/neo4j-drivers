@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.neo4j.driver.v1.Values.parameters;
 
 import java.util.List;
+import java.util.Map;
 import java.util.HashMap;
 
 import org.junit.Before;
@@ -111,7 +112,7 @@ public class Neo4jReactiveDriverTest {
 			assertTrue(session.lastBookmark().equals("Used a statement."));
 			
 			
-			HashMap<String, Object> testElement = new HashMap<>();
+			Map<String, Object> testElement = new HashMap<>();
 			testElement.put("name", "Bob");
 			tx = session.beginTransaction("Used a record.");
 			Record rec = EmbeddedTestkitRecordFactory.create(testElement);

@@ -1,3 +1,4 @@
 dependencies {
   compile project(':neo4j-driver-common')
+  compile project(':neo4j-embedded-testkit-driver')
 }
