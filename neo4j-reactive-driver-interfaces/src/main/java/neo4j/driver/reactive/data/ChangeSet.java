@@ -1,4 +1,4 @@
-package neo4j.driver.reactive.data;
+package iethw.neo4j.driver.reactive.data;
 
 import java.util.stream.Collectors;
 

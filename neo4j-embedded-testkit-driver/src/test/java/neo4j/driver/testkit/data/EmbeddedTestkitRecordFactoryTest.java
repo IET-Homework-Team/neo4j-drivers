@@ -1,4 +1,4 @@
-package neo4j.driver.testkit.data;
+package iethw.neo4j.driver.testkit.data;
 
 import java.lang.Iterable;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import org.neo4j.test.TestGraphDatabaseFactory;
 
 import com.google.common.collect.ImmutableMap;
 
-import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
+import iethw.neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 
 public class EmbeddedTestkitRecordFactoryTest {
 	enum TestRelationshipTypes implements RelationshipType { CONTAINED_IN, KNOWS }

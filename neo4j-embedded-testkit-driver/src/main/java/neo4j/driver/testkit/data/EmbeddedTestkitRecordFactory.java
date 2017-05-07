@@ -1,4 +1,4 @@
-package neo4j.driver.testkit.data;
+package iethw.neo4j.driver.testkit.data;
 
 import java.util.ArrayList;
 import java.util.List;

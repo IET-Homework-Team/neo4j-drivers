@@ -1,4 +1,4 @@
-package neo4j.driver.util;
+package iethw.neo4j.driver.util;
 
 import static org.junit.Assert.*;
 
@@ -29,8 +29,8 @@ import org.neo4j.test.TestGraphDatabaseFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
-import neo4j.driver.util.PrettyPrinter;
+import iethw.neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
+import iethw.neo4j.driver.util.PrettyPrinter;
 
 public class PrettyPrintingNodeTest {
 	private class UnsupportedTestEntity implements Entity, AsValue

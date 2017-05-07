@@ -1,4 +1,4 @@
-package neo4j.driver.reactive.data;
+package iethw.neo4j.driver.reactive.data;
 
 import org.neo4j.driver.v1.Record;
 

@@ -1,9 +1,9 @@
-package neo4j.driver.reactive.impl;
+package iethw.neo4j.driver.reactive.impl;
 
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.Transaction;
 
-import neo4j.driver.transactions.SessionDependentTransaction;
+import iethw.neo4j.driver.transactions.SessionDependentTransaction;
 
 public class Neo4jReactiveTransaction extends SessionDependentTransaction<Transaction> {
 

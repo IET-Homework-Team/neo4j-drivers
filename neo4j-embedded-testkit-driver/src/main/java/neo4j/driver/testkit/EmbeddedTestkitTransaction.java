@@ -1,9 +1,9 @@
-package neo4j.driver.testkit;
+package iethw.neo4j.driver.testkit;
 
 import org.neo4j.driver.v1.Session;
 import org.neo4j.graphdb.Transaction;
 
-import neo4j.driver.transactions.SessionDependentTransaction;
+import iethw.neo4j.driver.transactions.SessionDependentTransaction;
 
 public class EmbeddedTestkitTransaction extends SessionDependentTransaction<Transaction> {
 

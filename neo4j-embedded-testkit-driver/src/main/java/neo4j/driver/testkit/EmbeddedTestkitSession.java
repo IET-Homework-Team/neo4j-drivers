@@ -1,4 +1,4 @@
-package neo4j.driver.testkit;
+package iethw.neo4j.driver.testkit;
 
 import java.util.Collections;
 import java.util.Map;
@@ -17,7 +17,7 @@ import org.neo4j.graphdb.Result;
 
 import com.google.common.collect.Multiset;
 
-import neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
+import iethw.neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
 
 public class EmbeddedTestkitSession implements Session {
 	private final GraphDatabaseService gds;

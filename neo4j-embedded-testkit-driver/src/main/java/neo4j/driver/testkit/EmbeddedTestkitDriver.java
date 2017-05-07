@@ -1,4 +1,4 @@
-package neo4j.driver.testkit;
+package iethw.neo4j.driver.testkit;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package neo4j.driver.testkit;
+package iethw.neo4j.driver.testkit;
 
 import static org.junit.Assert.assertTrue;
 
@@ -24,9 +24,9 @@ import org.neo4j.test.TestGraphDatabaseFactory;
 
 import com.google.common.collect.ImmutableMap;
 
-import neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
-import neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
-import neo4j.driver.util.PrettyPrinter;
+import iethw.neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
+import iethw.neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
+import iethw.neo4j.driver.util.PrettyPrinter;
 
 public class EmbeddedTestkitDriverTest {
 

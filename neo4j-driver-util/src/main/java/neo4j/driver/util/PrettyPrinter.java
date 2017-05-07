@@ -1,4 +1,4 @@
-package neo4j.driver.util;
+package iethw.neo4j.driver.util;
 
 import java.util.ArrayList;
 import java.util.List;
