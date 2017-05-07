@@ -90,6 +90,11 @@ public class EmbeddedTestkitDriverTest {
 		try (Session session2 = drivertest.session(am,"Bookmark2")) {
 		} catch(UnsupportedOperationException e){} //catch another exception
 		
+		f = new File("DBStore");
+		drivertest = new EmbeddedTestkitDriver(f); //create with a file
+		returned=((EmbeddedTestkitDriver) drivertest).getUnderlyingDatabaseService();
+		assertTrue(returned!=null);
+		
 		GraphDatabaseService gds = null;
 		try (Driver driver1 = new EmbeddedTestkitDriver(gds)) { //create with a gds
 			if(!driver1.isEncrypted())
