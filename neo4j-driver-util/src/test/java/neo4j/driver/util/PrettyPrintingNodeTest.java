@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.internal.InternalRelationship;
 import org.neo4j.driver.internal.value.NodeValue;
+import org.neo4j.driver.internal.value.PathValue;
 import org.neo4j.driver.internal.value.RelationshipValue;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Value;
@@ -131,7 +132,7 @@ public class PrettyPrintingNodeTest {
 	}
 	
 	//Tests with different Value classes
-	@Test
+	@Test(expected=NullPointerException.class)
 	public void testWithValueClasses() {
 		//NodeValue
 		List<String> labels = ImmutableList.of("Person");
@@ -153,8 +154,9 @@ public class PrettyPrintingNodeTest {
 		System.out.println(resultForRelationshipValue);
 		
 		
-		//Missing test for the PathValue type
-		//...
+		//PathValue
+		PathValue pathValue = null;
+		final String resultForPathValue = PrettyPrinter.toString(pathValue);
 	}
 	
 	//Test with a Relationship instance without properties
