@@ -36,7 +36,7 @@ public class EmbeddedTestkitStatementResult implements StatementResult {
 	}
 
 	@Override
-	public Record single() throws NoSuchRecordException {
+	public Record single() {
 		if (result.hasNext()) {
 			return next();
 		} else {
@@ -60,7 +60,7 @@ public class EmbeddedTestkitStatementResult implements StatementResult {
 
 	@Override
 	public <T> List<T> list(Function<Record, T> mapFunction) {
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override

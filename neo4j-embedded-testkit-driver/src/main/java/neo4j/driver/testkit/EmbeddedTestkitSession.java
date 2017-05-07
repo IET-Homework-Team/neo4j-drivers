@@ -1,7 +1,6 @@
 package neo4j.driver.testkit;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.neo4j.driver.v1.AccessMode;
@@ -22,9 +21,6 @@ import neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
 
 public class EmbeddedTestkitSession implements Session {
 	private final GraphDatabaseService gds;
-	private final Map<String, String> querySpecifications = new HashMap<>();
-	private final Map<String, Multiset<Record>> queryResults = new HashMap<>();
-	private final Map<String, Multiset<Record>> deltas = new HashMap<>();
 
 	public EmbeddedTestkitSession(GraphDatabaseService gds, AccessMode mode) {
 		this.gds = gds;
