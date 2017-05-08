@@ -1,6 +1,7 @@
 package iethw.neo4j.driver.testkit;
 
 import static org.junit.Assert.assertTrue;
+import static org.neo4j.driver.v1.Values.parameters;
 
 import java.io.File;
 import java.util.HashMap;
@@ -17,7 +18,6 @@ import org.neo4j.driver.v1.Statement;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Transaction;
 import org.neo4j.driver.v1.Value;
-import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.exceptions.NoSuchRecordException;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;

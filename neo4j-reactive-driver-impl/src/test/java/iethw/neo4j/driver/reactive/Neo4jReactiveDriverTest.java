@@ -20,8 +20,6 @@ import iethw.neo4j.driver.testkit.EmbeddedTestkitDriver;
 import iethw.neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 
 import org.neo4j.driver.v1.Statement;
-import org.neo4j.driver.v1.Value;
-import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.types.TypeSystem;
 import org.neo4j.driver.v1.Record;
 
