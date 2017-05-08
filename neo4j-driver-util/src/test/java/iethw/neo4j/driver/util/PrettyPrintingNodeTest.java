@@ -11,7 +11,6 @@ import org.neo4j.driver.internal.AsValue;
 import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.internal.InternalRelationship;
 import org.neo4j.driver.internal.value.NodeValue;
-import org.neo4j.driver.internal.value.PathValue;
 import org.neo4j.driver.internal.value.RelationshipValue;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Value;
@@ -216,6 +215,8 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForNodeValue);
 		
+		assertTrue("(:Person {name: \"John Doe\"})".equals(resultForNodeValue));
+		
 		//RelationshipValue
 		Map<String, Value> relationshipProperties = ImmutableMap.of("weight", Values.value(2));
 		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
@@ -225,6 +226,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForRelationshipValue);
 		
+		assertTrue("(1)-[:REL {weight: 2}]-(2)".equals(resultForRelationshipValue));
 		
 		//Missing test case for PathValue
 		//...

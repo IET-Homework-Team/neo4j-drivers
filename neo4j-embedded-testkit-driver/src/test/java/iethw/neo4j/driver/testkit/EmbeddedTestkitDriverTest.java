@@ -163,7 +163,7 @@ public class EmbeddedTestkitDriverTest {
 					Record rec = EmbeddedTestkitRecordFactory.create(testElement);
 					session.run("CREATE (a:Person {name: $name})",rec);
 					
-					Value val = Values.parameters("name", "Bob"); //value
+					Value val = parameters("name", "Bob"); //value
 					session.run("CREATE (a:Person {name: $name})",val);
 							
 				}
@@ -194,8 +194,8 @@ public class EmbeddedTestkitDriverTest {
 					} catch(UnsupportedOperationException e){}
 					
 					try{
-						Record a = sr.single(); //returns
-						Record b = sr.single(); //returns
+						sr.single(); //returns
+						sr.single(); //returns
 					    sr.single(); //exception
 					} catch (NoSuchRecordException e) {} //Result is empty
 					
