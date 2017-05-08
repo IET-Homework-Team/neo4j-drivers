@@ -2,7 +2,6 @@ package iethw.neo4j.driver.util;
 
 import static org.junit.Assert.*;
 
-import java.lang.Iterable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +21,6 @@ import org.neo4j.driver.v1.types.Node;
 import org.neo4j.driver.v1.types.Path;
 import org.neo4j.driver.v1.types.Relationship;
 import org.neo4j.driver.v1.util.Function;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.test.TestGraphDatabaseFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -204,7 +200,7 @@ public class PrettyPrintingNodeTest {
 	@Test(expected=UnsupportedOperationException.class)
 	public void testWithPath() {
 		Path nullPath = null;
-		final String result = PrettyPrinter.toString(nullPath);
+		PrettyPrinter.toString(nullPath);
 	}
 	
 	//Tests with different Value classes
@@ -230,9 +226,8 @@ public class PrettyPrintingNodeTest {
 		System.out.println(resultForRelationshipValue);
 		
 		
-		//PathValue
-		PathValue pathValue = null;
-		final String resultForPathValue = PrettyPrinter.toString(pathValue);
+		//Missing test case for PathValue
+		//...
 	}
 	
 	//Test with a Relationship instance without properties

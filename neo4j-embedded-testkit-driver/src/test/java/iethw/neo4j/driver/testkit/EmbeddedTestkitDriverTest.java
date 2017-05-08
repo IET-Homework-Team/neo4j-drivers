@@ -22,8 +22,6 @@ import org.neo4j.driver.v1.exceptions.NoSuchRecordException;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
-import com.google.common.collect.ImmutableMap;
-
 import iethw.neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 import iethw.neo4j.driver.testkit.data.EmbeddedTestkitStatementResult;
 import iethw.neo4j.driver.util.PrettyPrinter;

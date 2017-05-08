@@ -1,14 +1,11 @@
 package iethw.neo4j.driver.testkit.data;
 
-import java.lang.Iterable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
 import org.junit.Test;
 import org.neo4j.driver.internal.AsValue;
-import org.neo4j.driver.internal.InternalRelationship;
-import org.neo4j.driver.v1.types.MapAccessor;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
@@ -18,7 +15,6 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.driver.v1.util.Function;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
 import com.google.common.collect.ImmutableMap;
@@ -46,7 +42,7 @@ public class EmbeddedTestkitRecordFactoryTest {
 		public Object getProperty(String key, Object defaultValue) { return null; }
 
 		@Override
-		public void setProperty(String key, Object value) { }
+		public void setProperty(String key, Object value) { /*Empty on purspose*/ }
 
 		@Override
 		public Object removeProperty(String key) { return null; }

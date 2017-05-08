@@ -3,7 +3,6 @@ package iethw.neo4j.driver.reactive;
 import static org.junit.Assert.*;
 import static org.neo4j.driver.v1.Values.parameters;
 
-import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -25,8 +24,6 @@ import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.types.TypeSystem;
 import org.neo4j.driver.v1.Record;
-import org.neo4j.driver.internal.InternalRecord;
-import org.neo4j.driver.internal.value.InternalValue;
 
 public class Neo4jReactiveDriverTest {
 
@@ -123,7 +120,7 @@ public class Neo4jReactiveDriverTest {
 			
 			
 			tx = session.beginTransaction("Used a value.");
-			Value val = Values.parameters("name", "Bob");
+			Value val = parameters("name", "Bob");
 			session.run("CREATE (a:Person {name: $name})",val);
 			if(tx.isOpen()) tx.close();
 			assertTrue(session.lastBookmark().equals("Used a value."));
