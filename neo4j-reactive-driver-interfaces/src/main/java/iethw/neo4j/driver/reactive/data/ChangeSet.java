@@ -30,7 +30,7 @@ public class ChangeSet<T> {
 
 	private String formatRecords(Multiset<T> records) {
 		return records.stream() //
-				.map(r -> r.toString()) //
+				.map(T::toString) //
 				.collect(Collectors.joining(", ")); //
 	}
 
