@@ -77,7 +77,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForNode);
 		
-		assertTrue(resultForNode.equals("(:Person {name: \"John Doe\"})"));
+		assertTrue("(:Person {name: \"John Doe\"})".equals(resultForNode));
 		
 		
 		//Empty Node
@@ -88,7 +88,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForEmptyNode);
 		
-		assertTrue(resultForEmptyNode.equals("(:Person)"));
+		assertTrue("(:Person)".equals(resultForEmptyNode));
 		
 		
 		//Relationship
@@ -99,7 +99,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForRelationship);
 		
-		assertTrue(resultForRelationship.equals("(1)-[:REL {weight: 2}]-(2)"));
+		assertTrue("(1)-[:REL {weight: 2}]-(2)".equals(resultForRelationship));
 	}
 	
 	//Test with Node list
@@ -116,7 +116,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForSingleNode);
 		
-		assertTrue(resultForSingleNode.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"})]"));
+		assertTrue("[(:Person {name: \"John \"Escaped Quotes\" Doe\"})]".equals(resultForSingleNode));
 		
 		//With multiple elements in a way that the second element has no properties and the third one has no labels and no properties
 		nodeProperties = ImmutableMap.of();
@@ -131,7 +131,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForMultipleNodes);
 		
-		assertTrue(resultForMultipleNodes.equals("[(:Person {name: \"John \"Escaped Quotes\" Doe\"}),(:Person),()]"));
+		assertTrue("[(:Person {name: \"John \"Escaped Quotes\" Doe\"}),(:Person),()]".equals(resultForMultipleNodes));
 	}
 	
 	//Test with Relationship list
@@ -147,7 +147,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForSingleRelationship);
 		
-		assertTrue(resultForSingleRelationship.equals("[(1)-[:REL {weight: 2}]-(2)]"));
+		assertTrue("[(1)-[:REL {weight: 2}]-(2)]".equals(resultForSingleRelationship));
 		
 		//With multiple elements
 		testEntityList.add(rel);
@@ -156,7 +156,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForMultipleRelationships);
 		
-		assertTrue(resultForMultipleRelationships.equals("[(1)-[:REL {weight: 2}]-(2),(1)-[:REL {weight: 2}]-(2)]"));
+		assertTrue("[(1)-[:REL {weight: 2}]-(2),(1)-[:REL {weight: 2}]-(2)]".equals(resultForMultipleRelationships));
 	}
 	
 	//Test with UnsupportedTestEntity list
@@ -171,7 +171,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForSingleUnsupportedEntity);
 		
-		assertTrue(resultForSingleUnsupportedEntity.equals("[]"));
+		assertTrue("[]".equals(resultForSingleUnsupportedEntity));
 		
 		//With multiple elements
 		testEntityList.add(entity);
@@ -180,7 +180,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(resultForMultipleUnsupportedEntities);
 		
-		assertTrue(resultForMultipleUnsupportedEntities.equals("[]"));
+		assertTrue("[]".equals(resultForMultipleUnsupportedEntities));
 	}
 	
 	//Test with Record
@@ -193,7 +193,7 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(result);
 		
-		assertTrue(result.equals("<name=\"Bob\">"));
+		assertTrue("<name=\"Bob\">".equals(result));
 	}
 	
 	//Test with Path (!not a real path, just a substitution with null, because we expect it to throw an exception)
@@ -240,6 +240,6 @@ public class PrettyPrintingNodeTest {
 		
 		System.out.println(result);
 		
-		assertTrue(result.equals("(1)-[:REL]-(2)"));
+		assertTrue("(1)-[:REL]-(2)".equals(result));
 	}
 }
