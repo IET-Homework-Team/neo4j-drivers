@@ -204,7 +204,7 @@ public class PrettyPrintingNodeTest {
 	}
 	
 	//Tests with different Value classes
-	@Test(expected=NullPointerException.class)
+	@Test
 	public void testWithValueClasses() {
 		//NodeValue
 		List<String> labels = ImmutableList.of("Person");
