@@ -14,6 +14,7 @@ import org.neo4j.driver.v1.TransactionWork;
 import org.neo4j.driver.v1.Value;
 
 import iethw.neo4j.driver.reactive.impl.Neo4jReactiveDriver;
+import iethw.neo4j.driver.reactive.impl.Neo4jReactiveTransaction;
 import iethw.neo4j.driver.reactive.interfaces.ReactiveDriver;
 import iethw.neo4j.driver.reactive.interfaces.ReactiveSession;
 import iethw.neo4j.driver.testkit.EmbeddedTestkitDriver;
@@ -133,5 +134,23 @@ public class Neo4jReactiveDriverTest {
 		TransactionWork tw = null;
 		
 		session.writeTransaction(tw);
+	}
+	
+	@Test
+	public void testForceTransactionFailure() {
+		Transaction internalTransaction = session.beginTransaction();
+		Neo4jReactiveTransaction t = new Neo4jReactiveTransaction(session, internalTransaction);
+		
+		t.failure();
+	}
+	
+	@Test
+	public void testSessionClose() {
+		session.close();
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testNeo4jReactiveSessionGetTypeSystem() {
+		session.typeSystem();
 	}
 }

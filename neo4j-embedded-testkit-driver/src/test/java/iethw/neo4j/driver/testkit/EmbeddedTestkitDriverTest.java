@@ -178,7 +178,7 @@ public class EmbeddedTestkitDriverTest {
 			
 		gds = new TestGraphDatabaseFactory().newImpermanentDatabase();
 		
-		Driver driver2 = new EmbeddedTestkitDriver(gds) //create with a non-empty gds
+		Driver driver2 = new EmbeddedTestkitDriver(gds); //create with a non-empty gds
 	}
 	
 	@Test
