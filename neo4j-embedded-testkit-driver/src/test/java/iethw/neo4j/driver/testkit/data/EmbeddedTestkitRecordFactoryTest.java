@@ -86,9 +86,9 @@ public class EmbeddedTestkitRecordFactoryTest {
 		
 		List<String> keys = rec.keys();
 		
-		assertTrue(keys.get(0) == "Node1");
-		assertTrue(keys.get(1) == "Node2");
-		assertTrue(keys.get(2) == "Rel");
+		assertTrue("Node1".equals(keys.get(0)));
+		assertTrue("Node2".equals(keys.get(1)));
+		assertTrue("Rel".equals(keys.get(2)));
 		
 		
 		List<Value> values = rec.values();

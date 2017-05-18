@@ -20,11 +20,10 @@ import iethw.neo4j.driver.testkit.EmbeddedTestkitDriver;
 import iethw.neo4j.driver.testkit.data.EmbeddedTestkitRecordFactory;
 
 import org.neo4j.driver.v1.Statement;
-import org.neo4j.driver.v1.types.TypeSystem;
 import org.neo4j.driver.v1.Record;
 
 public class Neo4jReactiveDriverTest {
-	static final String PERSONS_QUERY = "persons";
+	private static final String PERSONS_QUERY = "persons";
 	
 	protected Driver embeddedTestkitDriver;
 	protected ReactiveDriver driver;

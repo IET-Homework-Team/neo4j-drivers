@@ -176,9 +176,9 @@ public class EmbeddedTestkitDriverTest {
 			}
 		}
 			
-		gds = new TestGraphDatabaseFactory().newImpermanentDatabase();	
-		try (Driver driver2 = new EmbeddedTestkitDriver(gds)) { //create with a non-empty gds
-		} //empty on purpose
+		gds = new TestGraphDatabaseFactory().newImpermanentDatabase();
+		
+		Driver driver2 = new EmbeddedTestkitDriver(gds) //create with a non-empty gds
 	}
 	
 	@Test
@@ -273,7 +273,7 @@ public class EmbeddedTestkitDriverTest {
 					
 					EmbeddedTestkitStatementResult sr = (EmbeddedTestkitStatementResult) statementResult;
 					assertTrue(sr.keys().size()==1); //it has one column
-					assertTrue(sr.hasNext()==true); //it has two nexts
+					assertTrue(sr.hasNext()); //it has two nexts
 					assertTrue(sr.consume()==null);
 					assertTrue(sr.summary()==null);
 					assertTrue(sr.list(null).size()==0); //expecting function call, with a zero size list as the return value
