@@ -64,9 +64,8 @@ public class EmbeddedTestkitRecordFactoryTest {
 		}
 	}
 	
-	//Test with a Relationship instance
 	@Test
-	public void test1() {
+	public void testCreateFromEntityMap() {
 		GraphDatabaseService gds = new TestGraphDatabaseFactory().newImpermanentDatabase();
 		Transaction tx = gds.beginTx();
 		
@@ -87,7 +86,7 @@ public class EmbeddedTestkitRecordFactoryTest {
 	
 	//Test with an unsupported class
 	@Test(expected=UnsupportedOperationException.class)
-	public void test2() {
+	public void testCreateFromEntityMapWithUnsupportedEntity() {
 		Map<String, Object> testElementList = ImmutableMap.of("Unsupported", new UnsupportedTestClass());
 		
 		Record rec = EmbeddedTestkitRecordFactory.create(testElementList);

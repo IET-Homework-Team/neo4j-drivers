@@ -66,7 +66,7 @@ public class PrettyPrintingNodeTest {
 	}
 	
 	@Test
-	public void testName() throws Exception {
+	public void testNodeToString() throws Exception {
 		//Node
 		List<String> labels = ImmutableList.of("Person");
 		Map<String, Value> nodeProperties = ImmutableMap.of("name", Values.value("John Doe"));
@@ -77,20 +77,23 @@ public class PrettyPrintingNodeTest {
 		System.out.println(resultForNode);
 		
 		assertTrue("(:Person {name: \"John Doe\"})".equals(resultForNode));
-		
-		
-		//Empty Node
-		nodeProperties = ImmutableMap.of();
-		node = new InternalNode(1, labels, nodeProperties);
+	}
+	
+	@Test
+	public void testEmptyNodeToString() {
+		List<String> labels = ImmutableList.of("Person");
+		Map<String, Value> nodeProperties = ImmutableMap.of();
+		Node node = new InternalNode(1, labels, nodeProperties);
 		
 		final String resultForEmptyNode = PrettyPrinter.toString(node);
 		
 		System.out.println(resultForEmptyNode);
 		
 		assertTrue("(:Person)".equals(resultForEmptyNode));
-		
-		
-		//Relationship
+	}
+	
+	@Test
+	public void testRelationshipToString() {
 		Map<String, Value> relationshipProperties = ImmutableMap.of("weight", Values.value(2));
 		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
 		
@@ -101,9 +104,8 @@ public class PrettyPrintingNodeTest {
 		assertTrue("(1)-[:REL {weight: 2}]-(2)".equals(resultForRelationship));
 	}
 	
-	//Test with Node list
 	@Test
-	public void testWithNodeList() {
+	public void testNodeListToString() {
 		List<String> labels = ImmutableList.of("Person");
 		Map<String, Value> nodeProperties = ImmutableMap.of("name", Values.value("John \"Escaped Quotes\" Doe"));
 		Node node = new InternalNode(1, labels, nodeProperties);
@@ -133,9 +135,8 @@ public class PrettyPrintingNodeTest {
 		assertTrue("[(:Person {name: \"John \"Escaped Quotes\" Doe\"}),(:Person),()]".equals(resultForMultipleNodes));
 	}
 	
-	//Test with Relationship list
 	@Test
-	public void testWithRelationshipList() {
+	public void testRelationshipListToString() {
 		Map<String, Value> relationshipProperties = ImmutableMap.of("weight", Values.value(2));
 		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
 		List<Entity> testEntityList = new ArrayList<>();
@@ -158,9 +159,8 @@ public class PrettyPrintingNodeTest {
 		assertTrue("[(1)-[:REL {weight: 2}]-(2),(1)-[:REL {weight: 2}]-(2)]".equals(resultForMultipleRelationships));
 	}
 	
-	//Test with UnsupportedTestEntity list
 	@Test
-	public void testWithUnsupportedEntityList() {
+	public void testUnsupportedEntityListToString() {
 		UnsupportedTestEntity entity = new UnsupportedTestEntity();
 		List<Entity> testEntityList = new ArrayList<>();
 		testEntityList.add(entity);
@@ -182,9 +182,8 @@ public class PrettyPrintingNodeTest {
 		assertTrue("[]".equals(resultForMultipleUnsupportedEntities));
 	}
 	
-	//Test with Record
 	@Test
-	public void testWithRecord() {
+	public void testRecordToString() {
 		Map<String, Object> testElement = ImmutableMap.of("name", "Bob");
 		Record rec = EmbeddedTestkitRecordFactory.create(testElement);
 		
@@ -197,15 +196,14 @@ public class PrettyPrintingNodeTest {
 	
 	//Test with Path (!not a real path, just a substitution with null, because we expect it to throw an exception)
 	@Test(expected=UnsupportedOperationException.class)
-	public void testWithPath() {
+	public void testPathToString() {
 		Path nullPath = null;
 		PrettyPrinter.toString(nullPath);
 	}
 	
 	//Tests with different Value classes
 	@Test
-	public void testWithValueClasses() {
-		//NodeValue
+	public void testNodeValueToString() {
 		List<String> labels = ImmutableList.of("Person");
 		Map<String, Value> nodeProperties = ImmutableMap.of("name", Values.value("John Doe"));
 		Node node = new InternalNode(1, labels, nodeProperties);
@@ -216,25 +214,27 @@ public class PrettyPrintingNodeTest {
 		System.out.println(resultForNodeValue);
 		
 		assertTrue("(:Person {name: \"John Doe\"})".equals(resultForNodeValue));
-		
-		//RelationshipValue
+	}
+	
+	@Test
+	public void testRelationshipValueToString() {
 		Map<String, Value> relationshipProperties = ImmutableMap.of("weight", Values.value(2));
 		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
-		value = new RelationshipValue(rel);
+		Value value = new RelationshipValue(rel);
 		
 		final String resultForRelationshipValue = PrettyPrinter.toString(value);
 		
 		System.out.println(resultForRelationshipValue);
 		
 		assertTrue("(1)-[:REL {weight: 2}]-(2)".equals(resultForRelationshipValue));
-		
-		//Missing test case for PathValue
-		//...
 	}
+	
+	//Missing test case for PathValue
+	//...
 	
 	//Test with a Relationship instance without properties
 	@Test
-	public void testWithEmptyRelationshipProperties() {
+	public void testRelationshipWithEmptyPropertiesToString() {
 		Map<String, Value> relationshipProperties = ImmutableMap.of();
 		Relationship rel = new InternalRelationship(5, 1, 2, "REL", relationshipProperties);
 		
