@@ -1,5 +1,8 @@
 package iethw.neo4j.driver.testkit.data;
 
+import static org.junit.Assert.*;
+
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -73,11 +76,34 @@ public class EmbeddedTestkitRecordFactoryTest {
 		Node node1 = gds.createNode();
 		node1.setProperty("Alma", true);
 		Node node2 = gds.createNode();
+		node2.setProperty("Beta", false);
 		Relationship n1n2rel = node1.createRelationshipTo(node2, TestRelationshipTypes.KNOWS);
 		
 		Map<String, Object> testElementList = ImmutableMap.of("Node1", node1, "Node2", node2, "Rel", n1n2rel);
 		
 		Record rec = EmbeddedTestkitRecordFactory.create(testElementList);
+		
+		
+		List<String> keys = rec.keys();
+		
+		assertTrue(keys.get(0) == "Node1");
+		assertTrue(keys.get(1) == "Node2");
+		assertTrue(keys.get(2) == "Rel");
+		
+		
+		List<Value> values = rec.values();
+		
+		org.neo4j.driver.v1.types.Node n = values.get(0).asNode();
+		Map<String, Object> m = n.asMap();
+		assertTrue(m.get("Alma").equals(true));
+		
+		n = values.get(1).asNode();
+		m = n.asMap();
+		assertTrue(m.get("Beta").equals(false));
+		
+		org.neo4j.driver.v1.types.Relationship r = values.get(2).asRelationship();
+		assertTrue(r.startNodeId() == node1.getId());
+		assertTrue(r.endNodeId() == node2.getId());
 		
 		
 		tx.success();

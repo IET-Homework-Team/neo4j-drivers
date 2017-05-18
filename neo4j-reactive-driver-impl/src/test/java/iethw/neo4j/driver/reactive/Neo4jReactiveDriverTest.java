@@ -24,7 +24,8 @@ import org.neo4j.driver.v1.types.TypeSystem;
 import org.neo4j.driver.v1.Record;
 
 public class Neo4jReactiveDriverTest {
-
+	static final String PERSONS_QUERY = "persons";
+	
 	protected Driver embeddedTestkitDriver;
 	protected ReactiveDriver driver;
 	protected ReactiveSession session;
@@ -50,9 +51,7 @@ public class Neo4jReactiveDriverTest {
 	}
 
 	@Test
-	public void test1() throws Exception {
-		final String PERSONS_QUERY = "persons";
-
+	public void testStatementCreateAndDelete() throws Exception {
 		session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
 		runUpdate(session, "CREATE (a:Person {name: $name, title: $title})",
 				parameters("name", "Arthur", "title", "King"));
@@ -63,85 +62,77 @@ public class Neo4jReactiveDriverTest {
 	}
 
 	@Test
-	public void test2() throws Exception {
-		final String PERSONS_QUERY = "persons";
-
+	public void testStatementCreate1() throws Exception {
 		session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
 		runUpdate(session, "CREATE (a:Person {name: $name})", parameters("name", "Alice"));
 		runUpdate(session, "CREATE (a:Person {name: $name})", parameters("name", "Bob"));
 	}
 
 	@Test
-	public void test3() throws Exception {
+	public void testStatementCreate2() throws Exception {
 		try (Transaction tx = session.beginTransaction()) {
 			tx.run("CREATE (a:Person {name: $name})", parameters("name", "Alice"));
 			tx.success();
 		}
 
-		final String PERSONS_QUERY = "persons";
-
 		session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
 		runUpdate(session, "CREATE (a:Person {name: $name})", parameters("name", "Bob"));
 	}
 	
-	@Test
-	public void test4() throws Exception { //catch exception on existing query, if session is open
+	@Test(expected=IllegalStateException.class)
+	public void testRegisterAlreadyRegisteredQuery() throws Exception { //catch exception on existing query, if session is open
 		session.reset();
-		if (session.isOpen())
-		try{
-			final String PERSONS_QUERY = "persons";
-			session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
-			session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
-		} catch (IllegalStateException e) {}
-		session.reset();
+		
+		assertTrue(session.isOpen());
+		
+		session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
+		session.registerQuery(PERSONS_QUERY, "MATCH (a:Person) RETURN a");
+
+		session.reset(); //We can't get here, if everything goes as expected
 	}
 	
 	@Test
-	public void test5() throws Exception { //test different run options than map
-		try {
-			Transaction tx = session.beginTransaction("Used a statement.");
-			Statement stat = new Statement("CREATE (a:Person {name:'Bob'})");
-			session.run(stat);
-			tx.success();
-			if(tx.isOpen()) tx.close();
-			assertTrue(session.lastBookmark().equals("Used a statement."));
-			
-			
-			Map<String, Object> testElement = new HashMap<>();
-			testElement.put("name", "Bob");
-			tx = session.beginTransaction("Used a record.");
-			Record rec = EmbeddedTestkitRecordFactory.create(testElement);
-			session.run("CREATE (a:Person {name: $name})",rec);
-			tx.success();
-			if(tx.isOpen()) tx.close();
-			assertTrue(session.lastBookmark().equals("Used a record."));
-			
-			
-			tx = session.beginTransaction("Used a value.");
-			Value val = parameters("name", "Bob");
-			session.run("CREATE (a:Person {name: $name})",val);
-			if(tx.isOpen()) tx.close();
-			assertTrue(session.lastBookmark().equals("Used a value."));
-			
-			
-			tx = session.beginTransaction("This is not empty.");
-			session.reset(); //Simulate that the session somehow reset.
-			if(session.lastBookmark().equals(""))
-			tx.failure();
-			
-			TypeSystem ts = session.typeSystem(); //To end the test, we throw an exception
-		} catch(UnsupportedOperationException e) {}
-		session.close();
+	public void testPlainStatement() {
+		Transaction tx = session.beginTransaction("Used a statement.");
+		Statement stat = new Statement("CREATE (a:Person {name:'Bob'})");
+		session.run(stat);
+		tx.success();
+		if(tx.isOpen()) tx.close();
+		assertTrue(session.lastBookmark().equals("Used a statement."));
 	}
 	
 	@Test
-	public void test6() throws Exception { //test exceptions on the transaction	
+	public void testParametrizedStatementWithRecord() {
+		Map<String, Object> testElement = new HashMap<>();
+		testElement.put("name", "Bob");
+		Transaction tx = session.beginTransaction("Used a record.");
+		Record rec = EmbeddedTestkitRecordFactory.create(testElement);
+		session.run("CREATE (a:Person {name: $name})",rec);
+		tx.success();
+		if(tx.isOpen()) tx.close();
+		assertTrue(session.lastBookmark().equals("Used a record."));
+	}
+	
+	@Test
+	public void testParametrizedStatementWithValue() {
+		Transaction tx = session.beginTransaction("Used a value.");
+		Value val = parameters("name", "Bob");
+		session.run("CREATE (a:Person {name: $name})",val);
+		if(tx.isOpen()) tx.close();
+		assertTrue(session.lastBookmark().equals("Used a value."));
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testReadTransaction() {
 		TransactionWork tw = null;
-		try{
-			session.readTransaction(tw);	
-		} catch(UnsupportedOperationException e){}
-		try{
-			session.writeTransaction(tw);	
-		} catch(UnsupportedOperationException e){}
+		
+		session.readTransaction(tw);
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testWriteTransaction() {
+		TransactionWork tw = null;
+		
+		session.writeTransaction(tw);
 	}
 }
